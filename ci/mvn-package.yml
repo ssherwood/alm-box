@@ -1,0 +1,22 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: openjdk
+    tag: 8-jdk-alpine
+inputs:
+- name: git-repo
+outputs:
+- name: mvn-package-out
+caches:
+- path: .m2
+run:
+  dir: git-repo
+  path: /bin/sh
+  args:
+  - -exc
+  - |
+    ./mvnw clean package
+    cp target/*.jar mvn-package-out
+params: { "MAVEN_OPTS": "-Dmaven.repo.local=../.m2" }

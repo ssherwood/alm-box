@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
   gogs:
     image: gogs/gogs
     ports:
@@ -13,7 +20,7 @@ services:
     image: 'jetbrains/teamcity-server'
     volumes:
       - './teamcity/data:/data/teamcity_server/datadir'
-      - './teamcity/log:/data/teamcity/logs'
+      - './teamcity/logs:/opt/teamcity/logs'
     ports:
       - '8111:8111'
     environment:

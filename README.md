@@ -10,12 +10,16 @@ I am planning on using this for demo purposes and wanted a quick way to fire up
 a complete suite of tools.  I opted for tooling that either had a small
 footprint or other interesting characteristics to facilitate the demo.
 
-## ALM Tools
+## ALM Tooling
+
+### [MailHog](https://github.com/mailhog/MailHog)
+
+Simple web and API based SMTP server for local testing.
 
 ### [Gogs (Git)](https://gogs.io/)
 
-Easy and lightweight UI for Git repositories.  It can be run on a Raspberry Pi
-so it'll be perfect to run for a demo.
+Easy and lightweight UI for managing Git repositories.  It can be run on a
+Raspberry Pi so it'll be perfect to run for a demo.
 
 #### Additional Info
 
@@ -25,50 +29,30 @@ so it'll be perfect to run for a demo.
 
 ### [TeamCity (CI/CD)](https://www.jetbrains.com/teamcity/)
 
+This can be run freely as long as it has less than 20 Build configurations
+(jobs) and 3 Agents.  See [here](https://confluence.jetbrains.com/display/TCD10/Licensing+Policy) for more details.
 
 ### MatterMost
 
-
-
-#### Additional Info
-
-- https://concourse.ci/docker-repository.html
+TODO
 
 ### Spring Initializr (Code): https://start.spring.io/
 
 Simple starter apps based on Spring Boot.
 
-## Basic Flow
-
-We will use Spring Initializr to generate code, create a repo in Gogs and check
-it in.  We'll create a Pipeline in Concourse and then trigger the first build.
-
-## TODO
-
-### Setup MiniKube to Deploy to
-
 ## Setup
 
-```sh
-mkdir -p keys/web keys/worker
+Run the ```init.sh``` script in the root directory to create the required
+folders.  Then just run ```docker-compose up``` (sudo if needed).  To run in
+the background, use the ```-d``` option.
 
-ssh-keygen -t rsa -f ./keys/web/tsa_host_key -N ''
-ssh-keygen -t rsa -f ./keys/web/session_signing_key -N ''
-
-ssh-keygen -t rsa -f ./keys/worker/worker_key -N ''
-
-cp ./keys/worker/worker_key.pub ./keys/web/authorized_worker_keys
-cp ./keys/web/tsa_host_key.pub ./keys/worker
-
-export CONCOURSE_EXTERNAL_URL=<your IP addr>
-
-```
+Install the ssh keys to TeamCity (the private key) and the public key to Gogs.
 
 ## Add an entry in /etc/hosts
 
 ```properties
-127.0.0.1   gogs
-127.0.0.1   teamcity-server
+127.0.1.1   gogs
+127.0.1.1   teamcity-server
 ```
 
 This will let you interact with gogs locally just like the container-to-container will

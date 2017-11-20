@@ -3,45 +3,35 @@ version: '3'
 services:
   gogs:
     image: gogs/gogs
-    ports: ["10022:22", "3000:3000"]
-    volumes: ["./gogs:/data"]
+    ports:
+      - '10022:22'
+      - '3000:3000'
+    volumes:
+      - './gogs:/data'
 
-  concourse-db:
-    image: postgres:9.5
+  teamcity-server:
+    image: 'jetbrains/teamcity-server'
+    volumes:
+      - './teamcity/data:/data/teamcity_server/datadir'
+      - './teamcity/log:/data/teamcity/logs'
+    ports:
+      - '8111:8111'
     environment:
-      POSTGRES_DB: concourse
-      POSTGRES_USER: concourse
-      POSTGRES_PASSWORD: changeme
-      PGDATA: /database
-
-  concourse-web:
-    image: concourse/concourse
-    links: [concourse-db, gogs]
-    command: web
-    depends_on: [concourse-db]
-    ports: ["8080:8080"]
-    volumes: ["./keys/web:/concourse-keys"]
-    restart: unless-stopped # required so that it retries until concourse-db comes up
+      - TEAMCITY_SERVER_MEM_OPTS="-Xmx750m"
+    links:
+      - gogs
+      - teamcity-agent
+    
+  teamcity-agent:
+    image: 'jetbrains/teamcity-agent'
     environment:
-      CONCOURSE_BASIC_AUTH_USERNAME: concourse
-      CONCOURSE_BASIC_AUTH_PASSWORD: changeme
-      CONCOURSE_EXTERNAL_URL: "${CONCOURSE_EXTERNAL_URL}"
-      CONCOURSE_POSTGRES_HOST: concourse-db
-      CONCOURSE_POSTGRES_USER: concourse
-      CONCOURSE_POSTGRES_PASSWORD: changeme
-      CONCOURSE_POSTGRES_DATABASE: concourse
-
-  concourse-worker:
-    image: concourse/concourse
-    privileged: true
-    links: [concourse-web, gogs]
-    depends_on: [concourse-web]
-    command: worker
-    volumes: ["./keys/worker:/concourse-keys"]
-    environment:
-      CONCOURSE_TSA_HOST: concourse-web
+      - SERVER_URL=teamcity-server:8111
+    links:
+      - gogs
 
   spring-initializr:
     image: ssherwood/initializr
-    ports: ["8081:8080"]
-    volumes: ["/tmp"]
+    ports:
+      - '8081:8080'
+    volumes:
+      - '/tmp'

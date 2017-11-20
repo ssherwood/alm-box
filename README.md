@@ -12,22 +12,26 @@ footprint or other interesting characteristics to facilitate the demo.
 
 ## ALM Tools
 
-### Gogs (Git): https://gogs.io/
+### [Gogs (Git)](https://gogs.io/)
 
 Easy and lightweight UI for Git repositories.  It can be run on a Raspberry Pi
 so it'll be perfect to run for a demo.
 
 #### Additional Info
+
 - https://github.com/gogits/gogs/tree/master/docker
 - https://github.com/gogits/gogs/issues/3026
 - https://github.com/gogits/go-gogs-client/wiki/Repositories
 
-### ConcourseCI (CI/CD): https://concourse.ci/
+### [TeamCity (CI/CD)](https://www.jetbrains.com/teamcity/)
 
-Concourse has an nice code-based CI/CD pipeline approach.  We should be able to
-link it to the Gogs instance and demo from `git push` to CI/CD build.
 
-#### Additional Info 
+### MatterMost
+
+
+
+#### Additional Info
+
 - https://concourse.ci/docker-repository.html
 
 ### Spring Initializr (Code): https://start.spring.io/
@@ -43,13 +47,9 @@ it in.  We'll create a Pipeline in Concourse and then trigger the first build.
 
 ### Setup MiniKube to Deploy to
 
+## Setup
 
-
-
-
-# Setup
-
-```
+```sh
 mkdir -p keys/web keys/worker
 
 ssh-keygen -t rsa -f ./keys/web/tsa_host_key -N ''
@@ -64,10 +64,11 @@ export CONCOURSE_EXTERNAL_URL=<your IP addr>
 
 ```
 
-# Add an entry in /etc/hosts
+## Add an entry in /etc/hosts
 
-```
+```properties
 127.0.0.1   gogs
+127.0.0.1   teamcity-server
 ```
 
 This will let you interact with gogs locally just like the container-to-container will

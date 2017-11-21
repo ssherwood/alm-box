@@ -42,17 +42,59 @@ Simple starter apps based on Spring Boot.
 
 ## Setup
 
-Run the ```init.sh``` script in the root directory to create the required
-folders.  Then just run ```docker-compose up``` (sudo if needed).  To run in
-the background, use the ```-d``` option.
+### Run the ```init.sh``` script in the root directory to create the required folders
 
-Install the ssh keys to TeamCity (the private key) and the public key to Gogs.
-
-## Add an entry in /etc/hosts
+### Add the following entries in /etc/hosts
 
 ```properties
 127.0.1.1   gogs
 127.0.1.1   teamcity-server
 ```
 
-This will let you interact with gogs locally just like the container-to-container will
+You may need to add these to your noproxy configurations (if you are )
+
+### Run ```docker-compose up``` (sudo if needed).  To run in the background, use the ```-d``` option
+
+You may need to get the latest version of docker and docker-compose installed.  See here:
+
+- https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
+- https://docs.docker.com/compose/install/#install-compose
+
+### Initialize Gogs
+
+- Select the SQLite3 option
+- Replace "localhost" with "gogs" on the Domain and Application URL
+- Email Service Settings
+  - mailhog:1025
+  - gogs@s1pkicdemo.com
+- Server and Other Services Settings
+  - [x] Enable Mail Notifications
+  - [ ] Enable Federated Avatars Lookup
+  - [ ] Enable Captcha
+- Select OK
+- Log in and create the admin account via "Sign up now"
+- Add the public ssh key generated for TeamCity in the ./keys folder
+
+### Install the ssh keys to TeamCity (the private key) and the public key to Gogs
+
+- Click Proceed
+- Select HSQLDB (local database)
+- Accept License and disable anonoymous stats
+- Create the Admin account
+  - teamcity
+  - TeamCity
+  - teamcity@s1pkicdemo.com
+  - [x] Show date/time in my timezone
+  - [x] Add builds triggered by me to favorites
+- Go to Administration -> Email Notifier
+  - mailhog
+  - 1025
+  - Test Connection
+- Add the Agent
+  - Select Agents -> Unauthorized (there should be 1)
+  - Select the Agent named ```almbox_teamcity-agent_1```
+  - Click "Authorize Agent"
+- Setup the ssh keys
+  - Select the _Root build job
+  - Select "SSH Keys" on the left-hand menu
+  - Pick Upload SSH Keys and upload the file from ./keys (the private key)

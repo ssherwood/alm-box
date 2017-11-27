@@ -42,23 +42,25 @@ Simple starter apps based on Spring Boot.
 
 ## Setup
 
-### Run the ```init.sh``` script in the root directory to create the required folders
+Run the ```init.sh``` script in the root directory to create the required
+folders.  Then just run ```docker-compose up``` (sudo if needed).  To run in
+the background, use the ```-d``` option.
 
-### Add the following entries in /etc/hosts
+You may need to get the latest version of docker and docker-compose installed.  See here:
+
+- https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
+- https://docs.docker.com/compose/install/#install-compose
+
+Install the ssh keys to TeamCity (the private key) and the public key to Gogs.
+
+## Add an entry in /etc/hosts
 
 ```properties
 127.0.1.1   gogs
 127.0.1.1   teamcity-server
 ```
 
-You may need to add these to your noproxy configurations (if you are )
-
-### Run ```docker-compose up``` (sudo if needed).  To run in the background, use the ```-d``` option
-
-You may need to get the latest version of docker and docker-compose installed.  See here:
-
-- https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
-- https://docs.docker.com/compose/install/#install-compose
+You may need to add these to your noproxy configurations (if you are behind a proxy)
 
 ### Initialize Gogs
 

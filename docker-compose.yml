@@ -30,7 +30,7 @@ services:
       - teamcity-agent
     
   teamcity-agent:
-    image: 'jetbrains/teamcity-agent'
+    image: 'ssherwood/teamcity-agent'
     environment:
       - SERVER_URL=teamcity-server:8111
     links:
